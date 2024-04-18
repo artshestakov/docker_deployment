@@ -39,6 +39,7 @@ sudo docker build \
 sudo docker run \
 --detach \
 --volume /opt/Logs/bot:/opt/Logs \
+--volume /opt/History:/opt/History \
 --volume /etc/timezone:/etc/timezone \
 --name $CONTAINER_NAME \
 $CONTAINER_NAME
