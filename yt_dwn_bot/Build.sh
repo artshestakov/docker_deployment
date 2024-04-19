@@ -22,7 +22,6 @@ cd rep
 cp build/bin/yt_dwn_bot ../
 cp Downloader/yt-dlp_linux ../
 cd ..
-rm -rf rep
 
 # Останавливаем контейнер и делаем чистку
 sudo docker container stop $(sudo docker ps --all --quiet --filter="name=$CONTAINER_NAME")
@@ -38,13 +37,17 @@ sudo docker build \
 # Запускаем
 sudo docker run \
 --detach \
---volume /opt/Logs/bot:/opt/Logs \
---volume /opt/History:/opt/History \
+--volume /opt/yt_dwn_bot/Logs:/opt/Logs \
+--volume /opt/yt_dwn_bot/History:/opt/History \
+--volume /opt/yt_dwn_bot/config.ini:/opt/config.ini \
 --volume /etc/timezone:/etc/timezone \
 --name $CONTAINER_NAME \
 $CONTAINER_NAME
 
-#TODO чистим за собой ранее вытащенные бинарники. Тут они нам не нужны уже.
+# Чистим за собой артефакты
+rm yt_dwn_bot
+rm yt-dlp_linux
+rm -rf rep
 
 sleep 1
 
