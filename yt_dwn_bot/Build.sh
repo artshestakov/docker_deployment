@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME=bot
+CONTAINER_NAME=yt_dwn_bot
 
 # Переходим в директорию скрипта
 cd "$(dirname "$0")"
