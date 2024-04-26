@@ -19,6 +19,11 @@ def FileExists(file_path):
         print("File \"" + file_path + "\" is exists!")
         sys.exit(1)
 
+# Создание директории, если ещё не существует
+def DirCreate(dir_path):
+    if not os.path.exists(dir_path):
+        os.mkdir(dir_path)
+
 # НАЧАЛО СКРИПТА
 
 # Проверяем количество указанных аргументов
@@ -35,6 +40,8 @@ db_password = sys.argv[3]
 # Добавим разделитель путей, если его нет
 if (dir_path[-1] != os.sep):
     dir_path += os.sep
+
+DirCreate(dir_path)
 
 # Формируем имена файлов
 file_name = dir_path + db_name + '_' + datetime.now().strftime("%Y.%m.%d_%H.%M")
@@ -84,3 +91,6 @@ if res == 0:
     file_log.close()
 else:
     print("Command failure. Check the file \"" + file_name_log + "\"")
+    sys.exit(1)
+
+# Проверим, не надо ли нам почистить директорию
