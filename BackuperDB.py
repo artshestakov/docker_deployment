@@ -5,29 +5,19 @@ import sys
 import os
 import time
 import pathlib
-from datetime import datetime
+import datetime
 # -----------------------------------------------------------------------------------------------
-SAVE_LAST_AMOUNT = 7 # Кол-во файлов, которые будут храниться
-# -----------------------------------------------------------------------------------------------
-def ShowUsage(): # Функция вывода помощи по запуску скрипта
+SAVE_LAST_AMOUNT = 14  # Кол-во файлов, которые будут храниться
+
+
+def show_usage():  # Функция вывода помощи по запуску скрипта
     print("Utility for creating database backup with pg_dump")
     print("Usage: BackuperDB.py [PATH_BACKUP_DIR] [DB_NAME] [DB_PASSWORD]")
     print("Example:")
-    print("    BackuperDB.py [C:\\folder OR /tmp/foler] testing_db super_password")
-# -----------------------------------------------------------------------------------------------
-def DirFiles(dir_path): # Получить список всех *.dmp и *.log файлов
+    print("    BackuperDB.py [C:\\folder OR /tmp/folder] testing_db super_password")
 
-    # Обойдём файлы в директории
-    dir_files = os.listdir(dir_path)
-    for file_name in dir_files:
-        file_path = dir_path + file_name
 
-        # Если расширение файла нам не подходит - удаляем его из массива
-        if pathlib.Path(file_path).suffix not in [".dmp", ".log"]:
-            dir_files.remove(file_name)
-    return dir_files
-# -----------------------------------------------------------------------------------------------
-def get_file_size(file_path): # Получить размер файла
+def get_file_size(file_path):  # Получить размер файла
     size = os.path.getsize(file_path)
     if size < 1024:
         return f"{size} bytes"
@@ -37,12 +27,12 @@ def get_file_size(file_path): # Получить размер файла
         return f"{round(size / (pow(1024, 2)), 2)} MB"
     elif size < pow(1024, 4):
         return f"{round(size / (pow(1024, 3)), 2)} GB"
-# -----------------------------------------------------------------------------------------------
+
 
 # Проверяем количество указанных аргументов
 if len(sys.argv) != 4:
     print("Invalid arguments!")
-    ShowUsage()
+    show_usage()
     sys.exit(1)
 
 # Вытаскиваем рабочие аргументы
@@ -59,7 +49,7 @@ if not os.path.exists(dir_path):
     os.mkdir(dir_path)
 
 # Формируем имена файлов
-file_path_dmp = dir_path + db_name + '_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".dmp"
+file_path_dmp = dir_path + db_name + '_' + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".dmp"
 file_path_log = str(pathlib.Path(sys.argv[0]).parent) + os.sep + os.path.basename(sys.argv[0]).split('.')[0] + ".log"
 
 # Формируем команду
@@ -71,28 +61,27 @@ if platform.system() == "Windows":
 else:
     cmd += "PGPASSWORD=" + db_password + " pg_dump "
 
-cmd += "--host=127.0.0.1 "             # Куда подключаемся
-cmd += "--port=5432 "                  # Порт
-cmd += "--username=postgres "          # Кем подключаемся
-cmd += "--format=c "                   # Формат выводимых данных
-cmd += "--compress=9 "                 # Уровень сжатия от 0 до 9 (9 - максимальный)
-cmd += "--inserts "                    # Выгрузить данные в виде команд INSERT, не COPY
-cmd += "--column-inserts "             # Выгружать данные в виде INSERT с именами столбцов
-cmd += "--role=postgres "              # Выполнить SET ROLE перед выгрузкой
-cmd += "--verbose "                    # Подробный вывод
-cmd += "--file=" + file_path_dmp + ' ' # Файл, куда будет выгружен дамп
-cmd += db_name                         # Собственно имя выгружаемой БД
-cmd += " >> " + file_path_log + " 2>&1" # Перехват stderr и запись вывода в лог-файл
+cmd += "--host=127.0.0.1 "               # Куда подключаемся
+cmd += "--port=5432 "                    # Порт
+cmd += "--username=postgres "            # Кем подключаемся
+cmd += "--format=c "                     # Формат выводимых данных
+cmd += "--compress=9 "                   # Уровень сжатия от 0 до 9 (9 - максимальный)
+cmd += "--inserts "                      # Выгрузить данные в виде команд INSERT, не COPY
+cmd += "--column-inserts "               # Выгружать данные в виде INSERT с именами столбцов
+cmd += "--role=postgres "                # Выполнить SET ROLE перед выгрузкой
+cmd += "--verbose "                      # Подробный вывод
+cmd += "--file=" + file_path_dmp + ' '   # Файл, куда будет выгружен дамп
+cmd += db_name                           # Собственно имя выгружаемой БД
+cmd += " >> " + file_path_log + " 2>&1"  # Перехват stderr и запись вывода в лог-файл
 
 print("Run command:\n" + cmd)
 
 time_start = time.time()
 res = subprocess.call(cmd, shell=True)
-time_end = time.time() - time_start
 
 # Допишем служебную информацию в лог файл
 if res == 0:
-    elapsed = "{:.3f} msec".format(time_end)
+    elapsed = "{:.3f} msec".format(time.time() - time_start)
     print("Command success for " + elapsed)
 
     file_log = open(file_path_log, "a")
@@ -107,5 +96,10 @@ else:
     print("Command failure. Check the file \"" + file_path_log + "\"")
     sys.exit(1)
 
-# Проверим, не надо ли нам почистить директорию
-dir_files = DirFiles(dir_path)
+# Почистим директорию от старых файлов
+dir_files = os.listdir(dir_path)
+dir_files.sort()
+del_amount = len(dir_files) - SAVE_LAST_AMOUNT  # Сколько нужно удалить файлов
+
+for i in range(del_amount):
+    os.remove(dir_path + dir_files[i])
