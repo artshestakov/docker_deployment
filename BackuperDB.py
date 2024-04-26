@@ -1,30 +1,43 @@
-#coding=utf-8
+# coding=utf-8
 import platform
 import subprocess
 import sys
 import os
 import time
+import pathlib
 from datetime import datetime
-
-# Функция вывода помощи по запуску скрипта
-def ShowUsage():
+# -----------------------------------------------------------------------------------------------
+SAVE_LAST_AMOUNT = 7 # Кол-во файлов, которые будут храниться
+# -----------------------------------------------------------------------------------------------
+def ShowUsage(): # Функция вывода помощи по запуску скрипта
     print("Utility for creating database backup with pg_dump")
     print("Usage: BackuperDB.py [PATH_BACKUP_DIR] [DB_NAME] [DB_PASSWORD]")
     print("Example:")
     print("    BackuperDB.py [C:\\folder OR /tmp/foler] testing_db super_password")
+# -----------------------------------------------------------------------------------------------
+def DirFiles(dir_path): # Получить список всех *.dmp и *.log файлов
 
-# Проверка существования файла
-def FileExists(file_path):
-    if os.path.exists(file_path):
-        print("File \"" + file_path + "\" is exists!")
-        sys.exit(1)
+    # Обойдём файлы в директории
+    dir_files = os.listdir(dir_path)
+    for file_name in dir_files:
+        file_path = dir_path + file_name
 
-# Создание директории, если ещё не существует
-def DirCreate(dir_path):
-    if not os.path.exists(dir_path):
-        os.mkdir(dir_path)
-
-# НАЧАЛО СКРИПТА
+        # Если расширение файла нам не подходит - удаляем его из массива
+        if pathlib.Path(file_path).suffix not in [".dmp", ".log"]:
+            dir_files.remove(file_name)
+    return dir_files
+# -----------------------------------------------------------------------------------------------
+def get_file_size(file_path): # Получить размер файла
+    size = os.path.getsize(file_path)
+    if size < 1024:
+        return f"{size} bytes"
+    elif size < pow(1024, 2):
+        return f"{round(size / 1024, 2)} KB"
+    elif size < pow(1024, 3):
+        return f"{round(size / (pow(1024, 2)), 2)} MB"
+    elif size < pow(1024, 4):
+        return f"{round(size / (pow(1024, 3)), 2)} GB"
+# -----------------------------------------------------------------------------------------------
 
 # Проверяем количество указанных аргументов
 if len(sys.argv) != 4:
@@ -38,24 +51,21 @@ db_name = sys.argv[2]
 db_password = sys.argv[3]
 
 # Добавим разделитель путей, если его нет
-if (dir_path[-1] != os.sep):
+if dir_path[-1] != os.sep:
     dir_path += os.sep
 
-DirCreate(dir_path)
+# Создаём директорию, если ещё не существует
+if not os.path.exists(dir_path):
+    os.mkdir(dir_path)
 
 # Формируем имена файлов
-file_name = dir_path + db_name + '_' + datetime.now().strftime("%Y.%m.%d_%H.%M")
-file_name_dmp = file_name + ".dmp"
-file_name_log = file_name + ".log"
-
-# Проверим, не существуют ли уже файлы
-FileExists(file_name_dmp)
-FileExists(file_name_log)
+file_path_dmp = dir_path + db_name + '_' + datetime.now().strftime("%Y%m%d_%H%M%S") + ".dmp"
+file_path_log = str(pathlib.Path(sys.argv[0]).parent) + os.sep + os.path.basename(sys.argv[0]).split('.')[0] + ".log"
 
 # Формируем команду
 cmd = str()
 
-if (platform.system() == "Windows"):
+if platform.system() == "Windows":
     os.environ["PGPASSWORD"] = db_password
     cmd += "pg_dump.exe "
 else:
@@ -70,9 +80,9 @@ cmd += "--inserts "                    # Выгрузить данные в ви
 cmd += "--column-inserts "             # Выгружать данные в виде INSERT с именами столбцов
 cmd += "--role=postgres "              # Выполнить SET ROLE перед выгрузкой
 cmd += "--verbose "                    # Подробный вывод
-cmd += "--file=" + file_name_dmp + ' ' # Файл, куда будет выгружен дамп
+cmd += "--file=" + file_path_dmp + ' ' # Файл, куда будет выгружен дамп
 cmd += db_name                         # Собственно имя выгружаемой БД
-cmd += " > " + file_name_log + " 2>&1" # Перехват stderr и запись вывода в лог-файл
+cmd += " >> " + file_path_log + " 2>&1" # Перехват stderr и запись вывода в лог-файл
 
 print("Run command:\n" + cmd)
 
@@ -85,12 +95,17 @@ if res == 0:
     elapsed = "{:.3f} msec".format(time_end)
     print("Command success for " + elapsed)
 
-    file_log = open(file_name_log, "a")
+    file_log = open(file_path_log, "a")
     file_log.write("\n")
-    file_log.write("Elapsed time: " + elapsed)
+    file_log.write("Command: " + cmd + '\n')
+    file_log.write("Elapsed time: " + elapsed + '\n')
+    file_log.write("DMP file: " + file_path_dmp + '\n')
+    file_log.write("File size: " + get_file_size(file_path_dmp) + '\n')
+    file_log.write("===========================================================\n\n")
     file_log.close()
 else:
-    print("Command failure. Check the file \"" + file_name_log + "\"")
+    print("Command failure. Check the file \"" + file_path_log + "\"")
     sys.exit(1)
 
 # Проверим, не надо ли нам почистить директорию
+dir_files = DirFiles(dir_path)
