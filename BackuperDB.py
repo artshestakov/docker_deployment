@@ -52,15 +52,10 @@ if not os.path.exists(dir_path):
 file_path_dmp = dir_path + db_name + '_' + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".dmp"
 file_path_log = str(pathlib.Path(sys.argv[0]).parent) + os.sep + os.path.basename(sys.argv[0]).split('.')[0] + ".log"
 
+os.environ["PGPASSWORD"] = db_password
+
 # Формируем команду
-cmd = str()
-
-if platform.system() == "Windows":
-    os.environ["PGPASSWORD"] = db_password
-    cmd += "pg_dump.exe "
-else:
-    cmd += "PGPASSWORD=" + db_password + " pg_dump "
-
+cmd = "pg_dump "
 cmd += "--host=127.0.0.1 "               # Куда подключаемся
 cmd += "--port=5432 "                    # Порт
 cmd += "--username=postgres "            # Кем подключаемся
