@@ -11,10 +11,11 @@ SAVE_LAST_AMOUNT = 14  # Кол-во файлов, которые будут х�
 
 
 def show_usage():  # Функция вывода помощи по запуску скрипта
-    print("Utility for creating database backup with pg_dump")
-    print("Usage: BackuperDB.py [PATH_BACKUP_DIR] [DB_NAME] [DB_PASSWORD]")
+    print("Utility for create a database backup by pg_dump")
+    print("Usage: BackuperDB.py [PATH_BACKUP_DIR] [DB_HOST] [DB_PORT] [DB_NAME] [DB_PASSWORD]")
+    print("")
     print("Example:")
-    print("    BackuperDB.py [C:\\folder OR /tmp/folder] testing_db super_password")
+    print("  BackuperDB.py [C:\\folder OR /tmp/folder] 127.0.0.1 5432 testing_db super_password")
 
 
 def get_file_size(file_path):  # Получить размер файла
@@ -30,15 +31,17 @@ def get_file_size(file_path):  # Получить размер файла
 
 
 # Проверяем количество указанных аргументов
-if len(sys.argv) != 4:
+if len(sys.argv) != 6:
     print("Invalid arguments!")
     show_usage()
     sys.exit(1)
 
 # Вытаскиваем рабочие аргументы
 dir_path = sys.argv[1]
-db_name = sys.argv[2]
-db_password = sys.argv[3]
+db_host = sys.argv[2]
+db_port = sys.argv[3]
+db_name = sys.argv[4]
+db_password = sys.argv[5]
 
 # Добавим разделитель путей, если его нет
 if dir_path[-1] != os.sep:
@@ -56,8 +59,8 @@ os.environ["PGPASSWORD"] = db_password
 
 # Формируем команду
 cmd = "pg_dump "
-cmd += "--host=127.0.0.1 "               # Куда подключаемся
-cmd += "--port=5432 "                    # Порт
+cmd += "--host=" + db_host + ' '         # Куда подключаемся
+cmd += "--port=" + db_port + ' '         # Порт
 cmd += "--username=postgres "            # Кем подключаемся
 cmd += "--format=c "                     # Формат выводимых данных
 cmd += "--compress=9 "                   # Уровень сжатия от 0 до 9 (9 - максимальный)
