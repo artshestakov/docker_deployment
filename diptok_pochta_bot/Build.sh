@@ -37,6 +37,7 @@ sudo docker build \
 # Запускаем
 sudo docker run \
 --detach \
+--restart=always \
 --name $CONTAINER_NAME \
 --volume /opt/diptok_pochta_bot/Logs:/opt/Logs \
 --volume /opt/diptok_pochta_bot/Users:/opt/Users \

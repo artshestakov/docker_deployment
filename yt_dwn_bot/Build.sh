@@ -37,6 +37,7 @@ sudo docker build \
 # Запускаем
 sudo docker run \
 --detach \
+--restart=always \
 --volume /opt/yt_dwn_bot/Logs:/opt/Logs \
 --volume /opt/yt_dwn_bot/History:/opt/History \
 --volume /opt/yt_dwn_bot/config.ini:/opt/config.ini \
