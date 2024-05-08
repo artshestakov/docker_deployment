@@ -5,7 +5,7 @@ ENV TZ="Europe/Moscow"
 
 RUN \
 apt update && \
-apt upgrade && \
+apt -y upgrade && \
 apt -y install libcurl4
 
 COPY ./yt_dwn_bot /opt/
