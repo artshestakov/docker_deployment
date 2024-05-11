@@ -4,9 +4,11 @@ MAINTAINER Shestakov Artem
 ENV TZ="Europe/Moscow"
 
 RUN \
-apt update && \
-apt -y upgrade && \
-apt -y install libcurl4
+  apt update && \
+  apt -y upgrade && \
+  apt -y install \
+    libcurl4 \
+    ffmpeg
 
 COPY ./yt_dwn_bot /opt/
 COPY ./yt-dlp_linux /opt/
