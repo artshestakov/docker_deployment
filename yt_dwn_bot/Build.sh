@@ -17,7 +17,7 @@ cd rep
 ./Build.sh
 
 # Забираем бинарники и чистим за собой
-cp build/bin/yt_dwn_bot ../
+cp Bin/Release/yt_dwn_bot ../
 cp Downloader/yt-dlp_linux ../
 cd ..
 
