@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+
+  pmake_bot:
+    build: pmake_bot/
+    command: ./pmake_bot
+    volumes:
+      - /opt/pmake_bot:/opt
