@@ -10,8 +10,4 @@ RUN \
     libcurl4 \
     ffmpeg
 
-COPY ./yt_dwn_bot /opt/
-COPY ./yt-dlp_linux /opt/
-COPY ./run.sh /opt/
-
-ENTRYPOINT ["/bin/sh", "-c", "/opt/run.sh"]
+WORKDIR /opt/
