@@ -7,3 +7,9 @@ services:
     command: ./pmake_bot
     volumes:
       - /opt/pmake_bot:/opt
+
+  serious_wolf_bot:
+    build: serious_wolf_bot/
+    command: ./serious_wolf_bot
+    volumes:
+      - /opt/serious_wolf_bot:/opt
