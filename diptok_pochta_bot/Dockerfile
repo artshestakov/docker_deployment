@@ -4,11 +4,8 @@ MAINTAINER Shestakov Artem
 ENV TZ="Europe/Moscow"
 
 RUN \
-apt update && \
-apt upgrade && \
-apt -y install libcurl4
+  apt update && \
+  apt upgrade -y && \
+  apt -y install libcurl4
 
-COPY ./diptok_pochta_bot /opt/
-COPY ./run.sh /opt/
-
-ENTRYPOINT ["/bin/sh", "-c", "/opt/run.sh"]
+WORKDIR /opt/
