@@ -9,5 +9,3 @@ RUN \
   apt -y install libcurl4
 
 WORKDIR /opt/
-
-ENTRYPOINT ["/bin/sh", "-c", "./serious_wolf_bot"]
