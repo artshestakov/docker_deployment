@@ -5,24 +5,28 @@ services:
   yt_dwn_bot:
     build: yt_dwn_bot/
     command: ./yt_dwn_bot
+    restart: on-failure
     volumes:
       - /opt/yt_dwn_bot:/opt
 
   diptok_pochta_bot:
     build: diptok_pochta_bot/
     command: ./diptok_pochta_bot
+    restart: on-failure
     volumes:
       - /opt/diptok_pochta_bot:/opt
 
   pmake_bot:
     build: pmake_bot/
     command: ./pmake_bot
+    restart: on-failure
     volumes:
       - /opt/pmake_bot:/opt
 
   serious_wolf_bot:
     build: serious_wolf_bot/
     command: ./serious_wolf_bot
+    restart: on-failure
     volumes:
       - /opt/serious_wolf_bot:/opt
 
