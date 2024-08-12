@@ -8,6 +8,10 @@ services:
     restart: on-failure
     volumes:
       - /opt/yt_dwn_bot:/opt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: "Europe/Moscow"
 
   diptok_pochta_bot:
     build: diptok_pochta_bot/
@@ -15,6 +19,10 @@ services:
     restart: on-failure
     volumes:
       - /opt/diptok_pochta_bot:/opt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: "Europe/Moscow"
 
   pmake_bot:
     build: pmake_bot/
@@ -22,6 +30,10 @@ services:
     restart: on-failure
     volumes:
       - /opt/pmake_bot:/opt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: "Europe/Moscow"
 
   serious_wolf_bot:
     build: serious_wolf_bot/
@@ -29,4 +41,8 @@ services:
     restart: on-failure
     volumes:
       - /opt/serious_wolf_bot:/opt
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: "Europe/Moscow"
 

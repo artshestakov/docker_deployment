@@ -1,8 +1,6 @@
 FROM debian:bullseye-slim
 MAINTAINER Shestakov Artem
 
-ENV TZ="Europe/Moscow"
-
 RUN \
   apt update && \
   apt -y upgrade && \
