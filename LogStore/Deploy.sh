@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 rm -rf rep
 
 # Клонируем свежий репозиторий и переходим в него
-git clone https://github.com/artshestakov/LogReader rep
+git clone https://github.com/artshestakov/LogStore rep
 cd rep
 
 # Обновляем подмодуль
@@ -17,7 +17,7 @@ cd rep
 ./Build.sh
 
 # Забираем бинарники и чистим за собой
-mv Bin/Release/LogReader /opt/LogReader
+mv Bin/Release/LogStore /opt/LogStore
 cd ..
 
 rm -rf rep
