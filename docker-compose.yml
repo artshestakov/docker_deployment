@@ -2,6 +2,7 @@ version: "3"
 
 services:
 
+  # Бот-загрузчик видео
   yt_dwn_bot:
     build: yt_dwn_bot/
     command: ./yt_dwn_bot
@@ -13,6 +14,7 @@ services:
     environment:
       TZ: "Europe/Moscow"
 
+  # Бот Алины Польской
   diptok_pochta_bot:
     build: diptok_pochta_bot/
     command: ./diptok_pochta_bot
@@ -24,6 +26,7 @@ services:
     environment:
       TZ: "Europe/Moscow"
 
+  # Бот-генератор паролей
   pmake_bot:
     build: pmake_bot/
     command: ./pmake_bot
@@ -35,6 +38,7 @@ services:
     environment:
       TZ: "Europe/Moscow"
 
+  # Волчий бот
   serious_wolf_bot:
     build: serious_wolf_bot/
     command: ./serious_wolf_bot
@@ -45,4 +49,12 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: "Europe/Moscow"
+
+  # Раннер для сборки Мигратор
+  github_runner_debian:
+    build: github_runner_debian
+    command: ./run.sh
+    environment:
+      TZ: "Europe/Moscow"
+      RUNNER_ALLOW_RUNASROOT: 1
 
