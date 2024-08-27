@@ -22,7 +22,7 @@ if [ "$(echo $?)" -ne "0" ]; then
 fi
 
 # Выполняем сборку контейнера
-sudo docker-compose build --parallel --progress plain $CONTAINER_NAME
+sudo docker-compose build --parallel --no-cache --progress plain $CONTAINER_NAME
 if [ "$(echo $?)" -ne "0" ]; then
     exit 1
 fi
