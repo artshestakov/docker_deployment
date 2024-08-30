@@ -6,7 +6,7 @@ services:
   yt_dwn_bot:
     build: yt_dwn_bot/
     command: ./yt_dwn_bot
-    restart: on-failure
+    restart: always
     volumes:
       - /opt/yt_dwn_bot:/opt
       - /etc/timezone:/etc/timezone:ro
@@ -18,7 +18,7 @@ services:
   diptok_pochta_bot:
     build: diptok_pochta_bot/
     command: ./diptok_pochta_bot
-    restart: on-failure
+    restart: always
     volumes:
       - /opt/diptok_pochta_bot:/opt
       - /etc/timezone:/etc/timezone:ro
@@ -30,7 +30,7 @@ services:
   pmake_bot:
     build: pmake_bot/
     command: ./pmake_bot
-    restart: on-failure
+    restart: always
     volumes:
       - /opt/pmake_bot:/opt
       - /etc/timezone:/etc/timezone:ro
@@ -42,7 +42,7 @@ services:
   serious_wolf_bot:
     build: serious_wolf_bot/
     command: ./serious_wolf_bot
-    restart: on-failure
+    restart: always
     volumes:
       - /opt/serious_wolf_bot:/opt
       - /etc/timezone:/etc/timezone:ro
@@ -53,6 +53,7 @@ services:
   # Раннер для сборки Мигратор
   github_runner_debian:
     build: github_runner_debian
+    restart: always
     command: ./run.sh
     environment:
       TZ: "Europe/Moscow"
