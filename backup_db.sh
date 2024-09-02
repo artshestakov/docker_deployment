@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Проверка наличия параметра
-function check_parameter()
+function CheckParameter()
 {
     # Если параметр не пустой - ругаемся и выходим из скрипта
     if [ -z "$1" ]
@@ -17,18 +17,18 @@ function check_parameter()
     # Параметр указали - все ок
 }
 
-# Проверяем наличие параметров
+# Вытаскиваем входные параметры и проверяем их
 DB_HOST=$1
 DB_PORT=$2
 DB_NAME=$3
 DB_PASS=$4
 DIR_PATH=$5
 
-check_parameter $DB_HOST
-check_parameter $DB_PORT
-check_parameter $DB_NAME
-check_parameter $DB_PASS
-check_parameter $DIR_PATH
+CheckParameter $DB_HOST
+CheckParameter $DB_PORT
+CheckParameter $DB_NAME
+CheckParameter $DB_PASS
+CheckParameter $DIR_PATH
 
 # Если последний символ не является разделителем - добавим его
 LAST_CHAR="${DIR_PATH: -1}"
