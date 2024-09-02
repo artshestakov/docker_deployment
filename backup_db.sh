@@ -37,6 +37,9 @@ then
     DIR_PATH+="/"
 fi
 
+# Создаём полный путь к указанной папке, даже если она уже существует
+mkdir -p $DIR_PATH
+
 # Формируем путь к файлу
 FILE_PATH=$DIR_PATH$DB_NAME$(date +"_%Y%m%d%H%M%S")
 FILE_PATH_DMP=$FILE_PATH".dmp"
@@ -50,7 +53,8 @@ pg_dump \
   --host=$DB_HOST \
   --port=$DB_PORT \
   --username=postgres \
-  --format=c --compress=9 \
+  --format=c \
+  --compress=9 \
   --inserts \
   --column-inserts \
   --role=postgres \
