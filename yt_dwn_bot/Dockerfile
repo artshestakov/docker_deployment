@@ -6,6 +6,7 @@ RUN \
   apt -y upgrade && \
   apt -y install \
     libcurl4 \
-    ffmpeg
+    ffmpeg \
+    procps
 
 WORKDIR /opt/

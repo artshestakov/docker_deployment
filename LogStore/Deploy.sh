@@ -16,9 +16,10 @@ cd rep
 # Собираем
 ./Build.sh
 
-# Забираем бинарники и чистим за собой
+# Забираем бинарник
 mv Bin/Release/LogStore /opt/LogStore
 cd ..
 
+# И чистим за собой
 rm -rf rep
 

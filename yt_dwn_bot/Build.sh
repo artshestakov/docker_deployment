@@ -18,7 +18,8 @@ cd rep
 
 # Забираем бинарники и чистим за собой
 mv Bin/Release/yt_dwn_bot /opt/yt_dwn_bot
-mv Downloader/yt-dlp_linux /opt/yt_dwn_bot
+cp Downloader/yt-dlp_linux /opt/yt_dwn_bot
+cp kill.sh /opt/yt_dwn_bot
 cd ..
 
 rm -rf rep
