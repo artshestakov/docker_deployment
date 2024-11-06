@@ -9,10 +9,17 @@
 # ##############################################
 
 GITHUB_PATH=$1
+TARGET_PATH=$2
 
-# Убедимся, что нам подали путь к папке
+# Убедимся, что нам подали путь к папке, куда мы будем клонировать репозитории
 if [[ -z $GITHUB_PATH ]]; then
-    echo "Dir path is not specified. Example: github_backup.cmd /path/to/folder"
+    echo "Github path is not specified. Example: backup_github.cmd /path/to/github_repo /path/to/storage"
+    exit 1
+fi
+
+# И не забываем про целевую папку, иначе некуда будет перемещать архивы
+if [[ -z $TARGET_PATH ]]; then
+    echo "Target path is not specified. Example: backup_github.cmd /path/to/github_repo /path/to/storage"
     exit 1
 fi
 
@@ -49,9 +56,11 @@ for row in $(echo "${JSON_ARRAY}" | jq -r '.[] | @base64'); do
     # Сформируем переменные для работы
     URL=$(_jq '.url')
     NAME=$(_jq '.name')
-    REPO_DIR_PATH=$GITHUB_PATH/$NAME
+    REPO_DIR_PATH=$GITHUB_PATH$NAME
 
-    echo "" # Для удобства просмотра вывода
+    # Для удобства просмотра вывода
+    echo ""
+    echo "Process of: $NAME"
 
     # Проверим, не существует ли уже папка с репозиторием.
     # Если существует - репозиторий уже клонировали - не насилуем диск и делаем pull
@@ -72,6 +81,12 @@ for row in $(echo "${JSON_ARRAY}" | jq -r '.[] | @base64'); do
         git clone --recurse-submodules $URL $REPO_DIR_PATH
 
     fi
+
+    # Архивируем папку
+    tar -cf $GITHUB_PATH$NAME.tar -C $REPO_DIR_PATH .
+
+    # И перемещаем её куда нам сказали
+    mv --force $GITHUB_PATH$NAME.tar $TARGET_PATH
 
 done
 
