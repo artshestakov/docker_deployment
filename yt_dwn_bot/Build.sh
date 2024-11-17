@@ -16,10 +16,14 @@ cd rep
 # Собираем
 ./Build.sh
 
+# Делаем резервную копию
+cp /opt/yt_dwn_bot/yt_dwn_bot /opt/yt_dwn_bot/yt_dwn_bot.backup
+
 # Забираем бинарники и чистим за собой
 mv Bin/Release/yt_dwn_bot /opt/yt_dwn_bot
 cp Downloader/yt-dlp_linux /opt/yt_dwn_bot
 cp kill.sh /opt/yt_dwn_bot
+cp Lang/English.lang /opt/yt_dwn_bot/bot.lang
 cd ..
 
 rm -rf rep

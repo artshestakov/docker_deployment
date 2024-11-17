@@ -50,12 +50,3 @@ services:
     environment:
       TZ: "Europe/Moscow"
 
-  # Раннер для сборки Мигратор
-  github_runner_debian:
-    build: github_runner_debian
-    restart: always
-    command: ./run.sh
-    environment:
-      TZ: "Europe/Moscow"
-      RUNNER_ALLOW_RUNASROOT: 1
-
