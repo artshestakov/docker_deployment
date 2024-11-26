@@ -24,6 +24,7 @@ mv Bin/Release/yt_dwn_bot /opt/yt_dwn_bot
 mv Bin/Release/yt-dlp_linux /opt/yt_dwn_bot
 cp kill.sh /opt/yt_dwn_bot
 cp Lang/English.lang /opt/yt_dwn_bot/bot.lang
+cp LibraryExt/Components/Vosk/0.3.45/bin/Linux/libvosk.so /opt/yt_dwn_bot/libvosk.so
 cd ..
 
 rm -rf rep
