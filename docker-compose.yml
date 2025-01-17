@@ -12,6 +12,7 @@ services:
       - /opt/yt_dwn_bot/libvosk.so:/usr/lib/libvosk.so
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - /mnt/sata1:/media
     environment:
       TZ: "Europe/Moscow"
 
