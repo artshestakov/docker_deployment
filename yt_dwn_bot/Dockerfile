@@ -7,6 +7,7 @@ RUN \
   apt -y install \
     libcurl4 \
     ffmpeg \
-    procps
+    procps \
+    binutils
 
 WORKDIR /opt/
