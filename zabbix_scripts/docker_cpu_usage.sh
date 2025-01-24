@@ -10,7 +10,7 @@ then
 fi
 
 # Вытаскиваем потребление процессора формате 15.4%
-OUTPUT_STATS=$(sudo docker stats --all --no-stream --format "{{.CPUPerc}}" $CONTAINER_NAME)
+OUTPUT_STATS=$(docker stats --all --no-stream --format "{{.CPUPerc}}" $CONTAINER_NAME)
 
 # Убедимся, что Докер отработал без ошибок
 if [ $? -ne 0 ]

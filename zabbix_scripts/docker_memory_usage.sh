@@ -24,7 +24,7 @@ fi
 # Вытаскиваем потребление памяти в формате N[KiB|MiB|GiB] / [LIMIT]
 # Где: N - используемая память
 
-OUTPUT_STATS=$(sudo docker stats --all --no-stream --format "{{.MemUsage}}" $CONTAINER_NAME)
+OUTPUT_STATS=$(docker stats --all --no-stream --format "{{.MemUsage}}" $CONTAINER_NAME)
 
 # Убедимся, что Докер отработал без ошибок
 if [ $? -ne 0 ]
