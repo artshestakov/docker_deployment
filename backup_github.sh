@@ -38,7 +38,8 @@ fi
 #         "url": "[URL-ссылка на репозиторий]"
 #     }
 # ]
-JSON_ARRAY=$(gh repo list --json url,name)
+# Примечание: по умолчанию gh repo list возвращает 30 значений, максимум 1000
+JSON_ARRAY=$(gh repo list --json url,name --limit 100)
 
 # Получаем путь к текущей папке
 CURRENT_PATH=$(dirname -- "$(readlink -f "${BASH_SOURCE}")")
