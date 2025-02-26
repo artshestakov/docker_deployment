@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+
+  serious_wolf_bot:
+    container_name: serious_wolf_bot
+    image: 192.168.88.206:5000/serious_wolf_bot:latest
+    command: ./serious_wolf_bot
+    restart: always
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+      - /opt/serious_wolf_bot/Logs:/app/Logs
+      - /opt/serious_wolf_bot/wolf:/app/wolf
+
+      - /opt/serious_wolf_bot/config.ini:/app/config.ini
+      - /opt/serious_wolf_bot/keywords.txt:/app/keywords.txt
+      - /opt/serious_wolf_bot/sent_message.txt:/app/sent_message.txt
+    ports:
+      - '30000:30000'
+    environment:
+      TZ: "Europe/Moscow"
+

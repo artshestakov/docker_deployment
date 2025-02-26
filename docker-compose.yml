@@ -42,17 +42,3 @@ services:
     environment:
       TZ: "Europe/Moscow"
 
-  # Волчий бот
-  serious_wolf_bot:
-    build: serious_wolf_bot/
-    command: ./serious_wolf_bot
-    restart: always
-    volumes:
-      - /opt/serious_wolf_bot:/opt
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - '30000:30000'
-    environment:
-      TZ: "Europe/Moscow"
-

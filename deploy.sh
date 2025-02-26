@@ -1,34 +1,21 @@
 #!/bin/bash
 
-# Имя репозитория (и исполняемого файла в т.ч.)
-REPO_NAME=$1
+# Путь к файлу docker-compose.yml
+COMPOSE_PATH=$1
 
-# Имя папки для деплоя
-DIR_NAME=deploy_$REPO_NAME
-
-# Проверяем, что имя передали
-if [[ -z $REPO_NAME ]]; then
-    echo "Argument is empty!"
-    echo "Example: ./deploy.sh [repo_name]"
+# Убеждаемся что путь передали
+if [[ -z $COMPOSE_PATH ]]; then
+    echo "Path to the docker compose file is empty!"
+    echo "Example: ./deploy.sh /path/to/docker-compose.yml"
     exit 1
 fi
 
-# Удаляем папку с клонированным репозиторием (на случай если уже есть)
-rm -rf $DIR_NAME
+# Выкачиваем образ
+docker-compose --file $COMPOSE_PATH pull
 
-# Создаем папку
-mkdir deploy_$REPO_NAME
+# Запускаем
+docker-compose --file $COMPOSE_PATH up -d
 
-# Переходим в директорию скрипта
-cd $DIR_NAME
-
-# Скачиваем последний релиз и делаем бинарник исполняемым
-gh release download --repo artshestakov/$REPO_NAME --pattern $REPO_NAME
-chmod +x $REPO_NAME
-
-# Копируем бинарник и чистим за собой
-mv serious_wolf_bot /opt/serious_wolf_bot
-cd ..
-
-rm -rf $DIR_NAME
+# И спустя секунду смотрим на статус
+docker-compose --file $COMPOSE_PATH ps --all
 
