@@ -14,7 +14,7 @@ fi
 docker-compose --file $COMPOSE_PATH pull
 
 # Запускаем
-docker-compose --file $COMPOSE_PATH up -d
+docker-compose --file $COMPOSE_PATH up -d --renew-anon-volumes
 
 # И спустя секунду смотрим на статус
 docker-compose --file $COMPOSE_PATH ps --all
