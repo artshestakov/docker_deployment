@@ -4,7 +4,7 @@ services:
 
   serious_wolf_bot:
     container_name: serious_wolf_bot
-    image: 192.168.88.206:5000/serious_wolf_bot:latest
+    image: 192.168.88.208:1111/serious_wolf_bot:latest
     command: ./serious_wolf_bot
     restart: always
     volumes:
